@@ -39,7 +39,7 @@ class DarkmoonDockerClient:
         self.container_name = container_name
         self.default_timeout = timeout
         try:
-            self.client = docker.from_env()
+            self.client = (docker.from_env() if os.getenv("DARKMOON_TOOLBOX_ENABLED", "true") == "true" else None)
         except DockerException as e:
             raise RuntimeError(f"Failed to connect to Docker: {e}")
 
@@ -65,6 +65,8 @@ class DarkmoonDockerClient:
 
     def get_container(self) -> Optional[Container]:
         """Get the Darkmoon container if it exists and is running."""
+        if self.client is None:
+            return None  # Explicit configuration-only laboratory: no Docker access.
         try:
             container = self.client.containers.get(self.container_name)
             container.reload()
@@ -351,5 +353,5 @@ class DarkmoonDockerClient:
 
     def cleanup(self):
         """Clean up Docker client resources."""
-        if hasattr(self, "client"):
+        if getattr(self, "client", None) is not None:
             self.client.close()

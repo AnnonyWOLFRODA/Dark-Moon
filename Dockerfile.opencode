@@ -13,14 +13,18 @@ RUN apt-get update && apt-get install -y \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Clone OpenCode
-RUN git clone https://github.com/ASCIT31/opencode.git .
+# Pin the inspected fork revision; overrides must be reviewed explicitly.
+ARG OPENCODE_REF=b0e41ff2c4069bafdaac9c11327659b1bf911f87
+RUN git init . \
+ && git remote add origin https://github.com/ASCIT31/opencode.git \
+ && git fetch --depth=1 origin "$OPENCODE_REF" \
+ && git checkout --detach FETCH_HEAD
 
 # Install deps
 # Resilience: the synced opencode pulls ghostty-web from a GitHub tarball
 # (github:anomalyco/ghostty-web). codeload.github.com rate-limits (HTTP 429) the
 # self-hosted runner's shared IP, so retry the fetch with backoff.
-RUN n=0; until bun install; do \
+RUN n=0; until bun install --frozen-lockfile; do \
       n=$((n+1)); [ "$n" -ge 6 ] && { echo "install: giving up after $n attempts"; exit 1; }; \
       echo "bun install failed (attempt $n) — codeload 429 likely; backing off $((n*20))s"; \
       sleep $((n*20)); \
@@ -198,6 +202,7 @@ EOF
 
 
 COPY conf/apply-settings.sh /root/conf/apply-settings.sh
+COPY conf/lab-ready.py /root/conf/lab-ready.py
 RUN sed -i 's/\r$//' /root/conf/apply-settings.sh \
  && chmod +x /root/conf/apply-settings.sh
 

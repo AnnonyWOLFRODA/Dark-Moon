@@ -1,0 +1,37 @@
+# Standalone configuration-only lab. Do NOT combine with upstream Compose.
+name: darkmoon-lab
+services:
+  opencode:
+    image: ${DARKMOON_OPENCODE_IMAGE:?Set a locally built image pinned as name@sha256:digest}
+    pull_policy: missing
+    stdin_open: true
+    tty: true
+    init: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 256
+    mem_limit: 4g
+    cpus: 2
+    env_file:
+      - path: ./.opencode.env
+        format: raw
+    environment:
+      DARKMOON_TOOLBOX_ENABLED: "false"
+      DARKMOON_NO_TELEMETRY: "1"
+      DARKMOON_MCP_HOST: 127.0.0.1
+      TERM: xterm-256color
+    volumes:
+      - config:/root/.config/opencode
+      - state:/root/.local/share/opencode
+      - agents:/root/.opencode/agents
+      - workflows:/opt/darkmoon/mcp/server/src/tools/workflows
+    networks: [lab]
+    restart: "no"
+volumes:
+  config:
+  state:
+  agents:
+  workflows:
+networks:
+  lab:
+    internal: true

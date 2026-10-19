@@ -1,0 +1,22 @@
+# DANGER: socket access grants control of the entire selected Docker daemon.
+# Only use inside a disposable, dedicated laboratory VM. A network is not a
+# boundary against an agent with this socket. Never use the shared host daemon.
+services:
+  opencode:
+    environment:
+      DARKMOON_TOOLBOX_ENABLED: "true"
+      DOCKER_CONTAINER_NAME: darkmoon-lab-toolbox
+    volumes:
+      - type: bind
+        source: ${DARKMOON_LAB_DOCKER_SOCKET:?Explicitly select the dedicated VM Docker socket}
+        target: /var/run/docker.sock
+        bind:
+          create_host_path: false
+  darkmoon:
+    image: ${DARKMOON_TOOLBOX_IMAGE:?Set an immutable toolbox image ID or digest}
+    container_name: darkmoon-lab-toolbox
+    init: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks: [lab]
+    restart: "no"

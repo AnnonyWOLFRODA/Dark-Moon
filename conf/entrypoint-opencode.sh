@@ -41,9 +41,7 @@ mkdir -p \
 #######################################
 log "Applying OpenCode configuration (forced)"
 
-log "Runtime environment variables available:"
-# Redact secret values (anything whose name contains KEY/TOKEN/SECRET/PASSWORD)
-env | grep -E 'OPENROUTER_|OPENCODE_' | sed -E 's/^([^=]*(KEY|TOKEN|SECRET|PASSWORD)[^=]*)=.*/\1=REDACTED/I' || true
+# Do not log environment values, including endpoint query credentials.
 
 [ -x "$APPLY_SCRIPT" ] || fatal "Apply script not executable: $APPLY_SCRIPT"
 

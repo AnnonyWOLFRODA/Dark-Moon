@@ -1,0 +1,6 @@
+# Optional: dedicated NVIDIA host with Container Toolkit. No automatic probing.
+services:
+  ollama:
+    gpus: all
+    environment:
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility

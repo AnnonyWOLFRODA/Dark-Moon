@@ -1,0 +1,11 @@
+{
+  "status": "planning-only-not-an-enforcement-policy",
+  "allowed_hosts": [],
+  "excluded_hosts": [],
+  "requests_per_second": 1,
+  "allowed_tests": ["manual-http-health-check"],
+  "test_accounts": [],
+  "reports": "/root/.local/share/opencode/reports",
+  "destructive_actions": false,
+  "requires_dedicated_vm_firewall_and_orchestration_review": true
+}

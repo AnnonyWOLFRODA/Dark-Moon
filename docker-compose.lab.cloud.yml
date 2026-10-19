@@ -1,0 +1,9 @@
+# Explicit egress opt-in for provider auth/API or an LLM running on the host.
+# No destination filtering is provided by this overlay. Use a VM firewall/proxy.
+services:
+  opencode:
+    extra_hosts:
+      - host.docker.internal:host-gateway
+networks:
+  lab:
+    internal: false

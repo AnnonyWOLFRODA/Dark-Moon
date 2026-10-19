@@ -1,0 +1,12 @@
+# No model is downloaded by this configuration. CPU works without a GPU runtime.
+services:
+  ollama:
+    image: ${DARKMOON_OLLAMA_IMAGE:?Set an immutable Ollama image ID or digest}
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    volumes:
+      - ollama-models:/root/.ollama
+    networks: [lab]
+    restart: "no"
+volumes:
+  ollama-models:

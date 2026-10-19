@@ -451,3 +451,9 @@ This project is licensed under the **GNU General Public License v3.0**. See [LIC
 [⭐ Star us on GitHub](https://github.com/ASCIT31/Dark-Moon) · [📖 Full Documentation](docs/full.md) · [▶️ Watch the Demo (Pro dashboard)](https://youtu.be/zQE95bVLZgM)
 
 </div>
+## Personal self-hosted laboratory
+
+See [the selfhost guide](docs/selfhost/README.md) for persistent authentication,
+non-destructive installation, offline tests and the restricted laboratory profile.
+The default laboratory disables Docker toolbox execution; advanced use requires
+a dedicated isolated VM. See [local validation steps](docs/selfhost/LOCAL.md).

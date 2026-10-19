@@ -23,3 +23,9 @@ desktop.ini
 .idea/
 *.swp
 *~
+
+# Offline test outputs and the versioned CI directory.
+__pycache__/
+.pytest_cache/
+!.github/workflows/
+!.github/workflows/*.yml

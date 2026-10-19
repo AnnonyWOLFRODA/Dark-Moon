@@ -82,7 +82,7 @@ if [ -f "$APPLY" ]; then
   sb="$(mktemp -d)"
   sed "s#/root/.config/opencode#$sb/config#g; s#/root/.local/share/opencode#$sb/share#g" "$APPLY" > "$sb/a.sh"
   mkdir -p "$sb/config" "$sb/share"
-  if OPENROUTER_PROVIDER=anthropic OPENROUTER_API_KEY=x OPENCODE_MODEL=anthropic/x bash "$sb/a.sh" >/dev/null 2>&1; then
+  if OPENCODE_CONFIG_DIR="$sb/config" OPENCODE_AUTH_DIR="$sb/share" OPENROUTER_PROVIDER=anthropic OPENROUTER_API_KEY=x OPENCODE_MODEL=anthropic/x bash "$sb/a.sh" >/dev/null 2>&1; then
     if python3 - "$sb/config/opencode.json" "$NEW_AGENTS" <<'PY'
 import json,sys
 d=json.load(open(sys.argv[1])); agents=d.get("agent",{})
